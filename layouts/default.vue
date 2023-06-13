@@ -1,26 +1,38 @@
 <template>
-  <v-app>
+  <v-app :style="{ background: '#EFEBE9' }">
     <v-app-bar
       app
       fixed
       flat
-      dense
-      color="white"
+      density="compact"
+      color="brown1"
     >
-      <v-toolbar-title>{{ title }}</v-toolbar-title>
+      <v-toolbar-title class="mx-0">
+        <v-row
+          no-gutters
+            class="px-2"
+        >
+          <v-col
+            cols="1"
+            align="center"
+          >
+            <v-icon>mdi-chef-hat</v-icon>
+          </v-col>
+
+          <v-col
+            cols="11"
+            align="center"
+            class="text-left pt-1 pl-1"
+          >
+            {{ title }}
+          </v-col>
+        </v-row>
+      </v-toolbar-title>
     </v-app-bar>
 
     <v-main>
       <slot />
     </v-main>
-
-    <v-footer
-      app
-      absolute
-      color="white"
-    >
-      <span>&copy; {{ new Date().getFullYear() }}</span>
-    </v-footer>
   </v-app>
 </template>
 
