@@ -1,12 +1,6 @@
 <template>
   <v-container style="height: 100%;">
-    <div>TOP</div>
-    <div>isLogined: {{ isLogined }}</div>
-    <div>uid: {{ currentUser?.uid }}</div>
-    <div>displayName: {{ currentUser?.displayName }}</div>
-    <div>userID: {{ user?.id }}</div>
-    <div>admin: {{ user?.admin }}</div>
-    <div>approved: {{ user?.approved }}</div>
+    <div>Login</div>
 
     <v-row
       justify="center"
@@ -18,17 +12,17 @@
         class="text-center"
       >
         <v-btn
-          rounded
-          large
+          outlined
+          size="large"
           elevation="4"
-          color="white"
+          color="brown"
           style="text-transform: none"
-          @click="onClickGoogleLogout"
+          @click="onClickGoogleLogin"
         >
           <v-icon left>
             mdi-google
           </v-icon>
-          Sign out with Google
+          <span class="ml-2">Sign in with Google</span>
         </v-btn>
       </v-col>
     </v-row>
@@ -36,12 +30,20 @@
 </template>
 
 <script setup lang="ts">
+definePageMeta({
+  layout: 'login'
+})
+
 import { AuthStoreType } from "@/composables/use-auth";
 import AuthStoreKey from "@/composables/use-auth-key";
 
-const { isLogined, currentUser, user, logout } = inject(AuthStoreKey) as AuthStoreType;
+const { login } = inject(AuthStoreKey) as AuthStoreType;
 
-const onClickGoogleLogout = () => {
-  logout()
+const router = useRouter()
+
+const onClickGoogleLogin = () => {
+  login().then(() => {
+    router.push('/menu-tables')
+  })
 };
 </script>

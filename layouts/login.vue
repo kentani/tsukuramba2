@@ -23,7 +23,7 @@
       </v-toolbar-title>
     </v-app-bar>
 
-    <v-main v-show="true">
+    <v-main v-show="showable">
       <slot />
     </v-main>
   </v-app>
@@ -34,18 +34,24 @@ import { AuthStoreType } from "@/composables/use-auth";
 import AuthStoreKey from "@/composables/use-auth-key";
 
 const title = ref('つくらんば');
-const { isLogined, user, confirmAuth } = inject(AuthStoreKey) as AuthStoreType;
+const { user, confirmAuth } = inject(AuthStoreKey) as AuthStoreType;
 const router = useRouter()
+const state = reactive({
+  showable: false
+})
 const showable = computed(() => {
-  return isLogined.value && user.value && (user.value.approved || user.value.admin)
+  return state.showable
 })
 
 onBeforeMount(() => {
+  console.log(showable)
   confirmAuth().then(async () => {
-    // if (!user.value) {
-    //   // 未ログイン
-    //   return router.push('/login')
-    // }
+    if (user.value) {
+      // 未ログイン
+      return router.push('/menu-tables')
+    } else {
+      state.showable = true;
+    }
   })
 })
 </script>
