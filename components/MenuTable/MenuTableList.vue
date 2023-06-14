@@ -17,7 +17,7 @@
         height="150"
         color="brown2"
         :ripple="false"
-        @click="onClickMenuTable"
+        @click="onClickMenuTable(menuTable)"
       >
         <v-row
           dense
@@ -25,9 +25,9 @@
           style="height: 100%;"
         >
           <v-col cols="2">
-            <v-card-title class="pa-0 text-center font-weight-bold text-h6" style="color: rgb(var(--v-theme-brown1))">
-              <div style="line-height: 26px;">{{ menuTable.date }}</div>
-              <div style="line-height: 26px;">{{ menuTable.day }}</div>
+            <v-card-title class="pa-0 text-center" style="color: rgb(var(--v-theme-brown1))">
+              <div class="text-h5" style="line-height: 26px;">{{ menuTable.date }}</div>
+              <div class="text-body-2" style="line-height: 26px;">{{ menuTable.day }}</div>
             </v-card-title>
           </v-col>
 
@@ -50,7 +50,7 @@
                   <v-card-text class="pl-0 text-body-1">
                     <ul>
                       <li
-                        v-for="(menu, index) in menuTable.menus"
+                        v-for="(menu, index) in menus(menuTable.menus)"
                         :key="`${menuTable.date}-${index}`"
                         class="pb-1"
                       >
@@ -71,13 +71,36 @@
 </template>
 
 <script setup lang="ts">
+import { MenuTableListStoreType } from "@/composables/menu-tables/use-menu-table-list"
+import MenuTableListStoreKey from "@/composables/menu-tables/use-menu-table-list-key"
 import { MenuTableStoreType } from "@/composables/menu-tables/use-menu-table"
 import MenuTableStoreKey from "@/composables/menu-tables/use-menu-table-key"
 
-const { currentMenuTables } = inject(MenuTableStoreKey) as MenuTableStoreType
+const { tagsHash, menusHash, currentMenuTables } = inject(MenuTableListStoreKey) as MenuTableListStoreType
+const { currentMenuTable, setCurrentMenuTable, createMenuTable, buildMenus } = inject(MenuTableStoreKey) as MenuTableStoreType
 
-const onClickMenuTable = () => {
+const router = useRouter()
 
+const onClickMenuTable = async (menuTable: any) => {
+  if (menuTable.id) {
+    setCurrentMenuTable({ menuTable: menuTable })
+  } else {
+    await createMenuTable({ yyyymmdd: menuTable.yyyymmdd })
+  }
+
+
+  router.push({
+    path: `/menu-tables/d`,
+    query: { menuTableID: currentMenuTable.value.id }
+  })
+}
+
+const menus = (menus: any) => {
+  return buildMenus({
+    menus: menus || [],
+    tagsHash: tagsHash.value,
+    menusHash: menusHash.value
+  })
 }
 </script>
 

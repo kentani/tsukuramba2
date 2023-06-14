@@ -1,7 +1,7 @@
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth"
 import { getFirestore, collection, query, where, getDocs, orderBy, limit, doc, setDoc, serverTimestamp } from "firebase/firestore"
 import moment from 'moment'
-import 'moment/dist/locale/ja'
+// import 'moment/dist/locale/ja'
 
 export default function AuthStore(ctx: any) {
   // 状態

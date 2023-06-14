@@ -44,7 +44,6 @@ const showable = computed(() => {
 })
 
 onBeforeMount(() => {
-  console.log(showable)
   confirmAuth().then(async () => {
     if (user.value) {
       // 未ログイン

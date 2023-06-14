@@ -11,7 +11,7 @@
         <v-row dense>
           <v-col cols="12">
             <v-card-title
-              class="justify-center pa-0 pb-2 text-h4 font-weight-bold"
+              class="justify-center pa-0 pb-2 text-h4"
               style="color: rgb(var(--v-theme-brown1))"
             >
               <v-row
@@ -36,7 +36,8 @@
                   class="d-flex justify-center"
                   align-self="center"
                 >
-                  <span class="brown1-text">{{ currentMonth }}</span>
+                  <div>{{ currentMonth }}</div>
+                  <div>月</div>
                 </v-col>
 
                 <v-col
@@ -60,10 +61,10 @@
 </template>
 
 <script setup lang="ts">
-import { MenuTableStoreType } from "@/composables/menu-tables/use-menu-table"
-import MenuTableStoreKey from "@/composables/menu-tables/use-menu-table-key"
+import { MenuTableListStoreType } from "@/composables/menu-tables/use-menu-table-list"
+import MenuTableListStoreKey from "@/composables/menu-tables/use-menu-table-list-key"
 
-const { currentMonth, changeWeek } = inject(MenuTableStoreKey) as MenuTableStoreType
+const { currentMonth, changeWeek } = inject(MenuTableListStoreKey) as MenuTableListStoreType
 
 const onClickPrevWeek = () => {
   changeWeek({ type: 'prev' })
