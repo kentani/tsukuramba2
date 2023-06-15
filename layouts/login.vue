@@ -9,6 +9,7 @@
     >
       <v-toolbar-title class="mx-0">
         <v-row
+          dense
           no-gutters
           class="px-2"
         >

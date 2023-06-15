@@ -3,6 +3,7 @@
     <div>Login</div>
 
     <v-row
+      dense
       justify="center"
       align="center"
       style="height: 100%;"

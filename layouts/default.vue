@@ -9,6 +9,7 @@
     >
       <v-toolbar-title class="mx-0">
         <v-row
+          dense
           no-gutters
           class="px-2"
         >
@@ -42,10 +43,10 @@ const showable = computed(() => {
 
 onBeforeMount(() => {
   confirmAuth().then(async () => {
-    // if (!user.value) {
-    //   // 未ログイン
-    //   return router.push('/login')
-    // }
+    if (!user.value) {
+      // 未ログイン
+      return router.push('/login')
+    }
   })
 })
 </script>
