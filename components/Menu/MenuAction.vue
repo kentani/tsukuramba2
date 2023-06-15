@@ -35,13 +35,13 @@
 </template>
 
 <script setup lang="ts">
-import { MenuTableListStoreType } from "@/composables/menu-tables/use-menu-table-list"
-import MenuTableListStoreKey from "@/composables/menu-tables/use-menu-table-list-key"
+import { MenuListStoreType } from "@/composables/menus/use-menu-list"
+import MenuListStoreKey from "@/composables/menus/use-menu-list-key"
 
-const { allMenus} = inject(MenuTableListStoreKey) as MenuTableListStoreType
+const { filteredMenus } = inject(MenuListStoreKey) as MenuListStoreType
 
 const menuCount = computed(() => {
-  return allMenus.value.length
+  return filteredMenus.value.length
 })
 
 const onClickAddMenu = () => {

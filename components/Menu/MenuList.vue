@@ -36,16 +36,18 @@ import { MenuTableListStoreType } from "@/composables/menu-tables/use-menu-table
 import MenuTableListStoreKey from "@/composables/menu-tables/use-menu-table-list-key"
 import { MenuTableStoreType } from "@/composables/menu-tables/use-menu-table"
 import MenuTableStoreKey from "@/composables/menu-tables/use-menu-table-key"
+import { MenuListStoreType } from "@/composables/menus/use-menu-list"
+import MenuListStoreKey from "@/composables/menus/use-menu-list-key"
 
-const { tagsHash, menusHash, allMenus } = inject(MenuTableListStoreKey) as MenuTableListStoreType
-
+const { tagsHash, menusHash } = inject(MenuTableListStoreKey) as MenuTableListStoreType
 const { buildMenus } = inject(MenuTableStoreKey) as MenuTableStoreType
+const { filteredMenus } = inject(MenuListStoreKey) as MenuListStoreType
 
 const defaultImage = ref('/assets/images/pasta.png')
 
 const menus = computed(() => {
   return buildMenus({
-    menus: allMenus.value.map(menu => menu.id) || [],
+    menus: filteredMenus.value.map((menu: any) => menu.id) || [],
     tagsHash: tagsHash.value,
     menusHash: menusHash.value
   })

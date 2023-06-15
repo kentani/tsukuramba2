@@ -11,12 +11,15 @@ import MenuTableListStore from "@/composables/menu-tables/use-menu-table-list"
 import MenuTableListStoreKey from "@/composables/menu-tables/use-menu-table-list-key"
 import MenuTableStore from "@/composables/menu-tables/use-menu-table"
 import MenuTableStoreKey from "@/composables/menu-tables/use-menu-table-key"
+import MenuListStore from "@/composables/menus/use-menu-list"
+import MenuListStoreKey from "@/composables/menus/use-menu-list-key"
 
 export default defineComponent({
   setup(ctx: any) {
     provide(AuthStoreKey, AuthStore(ctx))
     provide(MenuTableListStoreKey, MenuTableListStore(ctx))
     provide(MenuTableStoreKey, MenuTableStore(ctx))
+    provide(MenuListStoreKey, MenuListStore(ctx))
   },
 })
 </script>

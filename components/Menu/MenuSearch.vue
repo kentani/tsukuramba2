@@ -13,7 +13,7 @@
       >
         <v-card-text class="pa-0">
           <v-chip-group
-            v-model="form.tags"
+            v-model="state.chips"
             multiple
             class="text-grey"
             selected-class="text-brown1"
@@ -42,7 +42,7 @@
       sm="5"
     >
       <v-text-field
-        v-model="form.name"
+        v-model="state.name"
         variant="outlined"
         density="compact"
         hide-details
@@ -62,7 +62,7 @@
         elevation="0"
         color="brown2"
         :ripple="false"
-        :disabled="!form.name.length && !form.tags.length"
+        :disabled="!state.name.length && !state.tags.length"
         @click="onClickClose"
       >
         <v-icon
@@ -79,32 +79,57 @@
 <script setup lang="ts">
 import { MenuTableListStoreType } from "@/composables/menu-tables/use-menu-table-list"
 import MenuTableListStoreKey from "@/composables/menu-tables/use-menu-table-list-key"
+import { MenuListStoreType } from "@/composables/menus/use-menu-list"
+import MenuListStoreKey from "@/composables/menus/use-menu-list-key"
 
-const { allTags } = inject(MenuTableListStoreKey) as MenuTableListStoreType
+const { allTags, allMenus } = inject(MenuTableListStoreKey) as MenuTableListStoreType
+const { filterMenus } = inject(MenuListStoreKey) as MenuListStoreType
 
 const state = reactive<{
-  form: any,
+  name: any,
+  tags: any,
+  chips: any
 }>({
-  form: { name: '', tags: [] },
+  name: '',
+  tags: [],
+  chips: []
 })
 
-const form = computed(() => {
-  return state.form
+const name = computed(() => {
+  return state.name
+})
+
+const tags = computed(() => {
+  return state.tags
 })
 
 const onClickTag = (tag: any) => {
+  if(state.tags.includes(tag.id)) {
+    const index = state.tags.indexOf(tag.id)
+    state.tags.splice(index, 1)
+  } else {
+    state.tags.push(tag.id)
+  }
 
+  filter()
 }
 
 const onChangeName = () => {
+  filter()
+}
 
+const filter = () => {
+  filterMenus({
+    menus: allMenus.value,
+    name: name.value,
+    tags: tags.value,
+  })
 }
 
 const onClickClose = () => {
-
-}
-
-const deepCopy = (obj: any) => {
-  return JSON.parse(JSON.stringify(obj))
+  state.name = ''
+  state.tags = []
+  state.chips = []
+  filter()
 }
 </script>

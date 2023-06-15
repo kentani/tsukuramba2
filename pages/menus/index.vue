@@ -15,11 +15,15 @@
 <script setup lang="ts">
 import { MenuTableListStoreType } from "@/composables/menu-tables/use-menu-table-list"
 import MenuTableListStoreKey from "@/composables/menu-tables/use-menu-table-list-key"
+import { MenuListStoreType } from "@/composables/menus/use-menu-list"
+import MenuListStoreKey from "@/composables/menus/use-menu-list-key"
 
-const { fetchAllTags, fetchAllMenus } = inject(MenuTableListStoreKey) as MenuTableListStoreType
+const { allMenus, fetchAllTags, fetchAllMenus } = inject(MenuTableListStoreKey) as MenuTableListStoreType
+const { setFilteredMenus } = inject(MenuListStoreKey) as MenuListStoreType
 
 onMounted(async () => {
   fetchAllTags()
-  fetchAllMenus()
+  await fetchAllMenus()
+  setFilteredMenus({ menus: allMenus.value })
 })
 </script>
