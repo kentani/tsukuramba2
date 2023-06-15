@@ -20,7 +20,7 @@
       </v-btn>
     </v-col>
 
-    <!-- <v-col cols="4" md="3" class="text-center">
+    <v-col cols="4" md="3" class="text-center">
       <v-btn
         variant="outlined"
         block
@@ -30,7 +30,7 @@
       >
       <v-icon>mdi-plus</v-icon>タグ
       </v-btn>
-    </v-col> -->
+    </v-col>
   </v-row>
 </template>
 

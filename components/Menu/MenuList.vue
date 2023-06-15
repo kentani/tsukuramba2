@@ -11,6 +11,7 @@
         flat
         rounded="0"
         color="brown2"
+        @click="onClickMenu(menu)"
       >
         <v-img
           class="align-end text-white"
@@ -38,18 +39,33 @@ import { MenuTableStoreType } from "@/composables/menu-tables/use-menu-table"
 import MenuTableStoreKey from "@/composables/menu-tables/use-menu-table-key"
 import { MenuListStoreType } from "@/composables/menus/use-menu-list"
 import MenuListStoreKey from "@/composables/menus/use-menu-list-key"
+import { MenuStoreType } from "@/composables/menus/use-menu"
+import MenuStoreKey from "@/composables/menus/use-menu-key"
 
 const { tagsHash, menusHash } = inject(MenuTableListStoreKey) as MenuTableListStoreType
 const { buildMenus } = inject(MenuTableStoreKey) as MenuTableStoreType
 const { filteredMenus } = inject(MenuListStoreKey) as MenuListStoreType
+const { setCurrentMenu } = inject(MenuStoreKey) as MenuStoreType
+
+const router = useRouter()
 
 const defaultImage = ref('/assets/images/pasta.png')
 
 const menus = computed(() => {
-  return buildMenus({
-    menus: filteredMenus.value.map((menu: any) => menu.id) || [],
-    tagsHash: tagsHash.value,
-    menusHash: menusHash.value
-  })
+  // return buildMenus({
+  //   menus: filteredMenus.value.map((menu: any) => menu.id) || [],
+  //   tagsHash: tagsHash.value,
+  //   menusHash: menusHash.value
+  // })
+  return filteredMenus.value
 })
+
+const onClickMenu = (menu: any) => {
+  setCurrentMenu({ menu: menu })
+
+  router.push({
+    path: '/menus/d',
+    query: { menuID: menu.id },
+  })
+}
 </script>

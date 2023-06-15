@@ -90,7 +90,7 @@ const onClickMenuTable = async (menuTable: any) => {
 
 
   router.push({
-    path: `/menu-tables/d`,
+    path: '/menu-tables/d',
     query: { menuTableID: currentMenuTable.value.id }
   })
 }

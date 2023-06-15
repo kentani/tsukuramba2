@@ -13,6 +13,8 @@ import MenuTableStore from "@/composables/menu-tables/use-menu-table"
 import MenuTableStoreKey from "@/composables/menu-tables/use-menu-table-key"
 import MenuListStore from "@/composables/menus/use-menu-list"
 import MenuListStoreKey from "@/composables/menus/use-menu-list-key"
+import MenuStore from "@/composables/menus/use-menu"
+import MenuStoreKey from "@/composables/menus/use-menu-key"
 
 export default defineComponent({
   setup(ctx: any) {
@@ -20,6 +22,7 @@ export default defineComponent({
     provide(MenuTableListStoreKey, MenuTableListStore(ctx))
     provide(MenuTableStoreKey, MenuTableStore(ctx))
     provide(MenuListStoreKey, MenuListStore(ctx))
+    provide(MenuStoreKey, MenuStore(ctx))
   },
 })
 </script>
