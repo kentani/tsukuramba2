@@ -27,6 +27,19 @@
     <v-main v-show="true">
       <slot />
     </v-main>
+
+    <v-bottom-navigation grow>
+      <v-btn
+        v-for="item in bottomItems"
+        :key="item.icon"
+        color="brown1"
+        size="small"
+        @click="onClickBottomBtn(item)"
+      >
+        <v-icon color="brown1" size="large">{{ item.icon }}</v-icon>
+        <span class="text-brown1 text-caption">{{ item.name }}</span>
+      </v-btn>
+    </v-bottom-navigation>
   </v-app>
 </template>
 
@@ -40,6 +53,16 @@ const router = useRouter()
 const showable = computed(() => {
   return isLogined.value && user.value && (user.value.approved || user.value.admin)
 })
+
+const bottomItems = ref([
+  { name: '献立表', icon: 'mdi-silverware', to: '/menu-tables' },
+  { name: 'メニュー', icon: 'mdi-silverware-fork-knife', to: '/menus' },
+  { name: 'アナリシス', icon: 'mdi-google-analytics', to: '/analysis' },
+])
+
+const onClickBottomBtn = (item: any) => {
+  router.push(item.to)
+}
 
 onBeforeMount(() => {
   confirmAuth().then(async () => {
