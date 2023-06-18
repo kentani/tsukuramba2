@@ -44,10 +44,15 @@ export default function MenuListStore(ctx: any) {
     state.filteredMenus = params.menus
   }
 
+  const addMenu = (params: { menu: any }) => {
+    state.filteredMenus.unshift(params.menu)
+  }
+
   return {
     filteredMenus,
     filterMenus,
     setFilteredMenus,
+    addMenu,
   }
 }
 

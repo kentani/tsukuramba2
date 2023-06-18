@@ -34,6 +34,7 @@
 
     <MenuEditMenuDialog
       ref="menuEditMenuDialog"
+      @close="onClose"
     />
   </v-row>
 </template>
@@ -42,7 +43,7 @@
 import { MenuListStoreType } from "@/composables/menus/use-menu-list"
 import MenuListStoreKey from "@/composables/menus/use-menu-list-key"
 
-const { filteredMenus } = inject(MenuListStoreKey) as MenuListStoreType
+const { filteredMenus, addMenu } = inject(MenuListStoreKey) as MenuListStoreType
 const menuEditMenuDialog = ref()
 
 const menuCount = computed(() => {
@@ -54,6 +55,12 @@ const onClickAddMenu = () => {
 }
 
 const onClickAddTag = () => {
+}
+
+const onClose = (menu?: any) => {
+  if(menu) {
+    addMenu({ menu: menu })
+  }
 }
 
 const openDialog = (dialogType: any) => {

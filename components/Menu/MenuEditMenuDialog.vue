@@ -147,12 +147,13 @@ const onClickCloseDialog = () => {
 }
 
 const onClickComplete = async () => {
+  let menu;
   if(state.isEdit) {
-    await updateMenu({ menu: currentMenu.value })
+    menu = await updateMenu({ menu: currentMenu.value })
   } else {
-    await createMenu({ menu: currentMenu.value })
+    menu = await createMenu({ menu: currentMenu.value })
   }
-  close(true)
+  close(menu)
 }
 
 const onChangeName = () => {
@@ -213,13 +214,13 @@ const open = (params: { isEdit: boolean }) => {
   state.dialog = true
 }
 
-const close = async (updated?: boolean) => {
+const close = async (menu?: any) => {
   if (!state.isEdit && currentMenu.value.url?.length) {
     await deleteImage()
   }
   setCurrentMenu({ menu: state.currentMenuToRollBack })
   state.dialog = false
-  emit('close', updated)
+  emit('close', menu)
 }
 
 const deleteImage = async () => {
@@ -232,10 +233,6 @@ const deleteImage = async () => {
 const setRollBackData = () => {
   state.currentMenuToRollBack = Object.assign({}, state.currentMenuToRollBack, currentMenu.value)
 }
-
-onUnmounted(() => {
-  console.log('close')
-})
 
 defineExpose({
   open,

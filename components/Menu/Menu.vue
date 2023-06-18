@@ -54,7 +54,7 @@ import { MenuStoreType } from "@/composables/menus/use-menu"
 import MenuStoreKey from "@/composables/menus/use-menu-key"
 
 const { tagsHash } = inject(MenuTableListStoreKey) as MenuTableListStoreType
-const { currentMenu } = inject(MenuStoreKey) as MenuStoreType
+const { currentMenu, setCurrentMenu } = inject(MenuStoreKey) as MenuStoreType
 
 const defaultImage = ref('/assets/images/pasta.png')
 const menuAddMenuTableDialog = ref()
@@ -68,9 +68,9 @@ const tags = computed(() => {
   })
 })
 
-const onClose = (updated: boolean) => {
-  if(updated) {
-    console.log('aaaa')
+const onClose = (menu?: any) => {
+  if(menu) {
+    setCurrentMenu({ menu: menu })
   }
 }
 
