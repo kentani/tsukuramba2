@@ -1,54 +1,48 @@
 <template>
-  <v-row
-    dense
-    justify="space-around"
-    align="center"
-  >
-    <v-col cols="4" md="3" class="text-brown1">
-      <div class="text-center text-caption">メニュー数</div>
-      <div class="text-center text-h6 brown--text font-weight-bold">{{ menuCount }}</div>
-    </v-col>
-
-    <v-col cols="4" md="3" class="text-center">
+  <v-row dense>
+    <v-col cols="4">
       <v-btn
         variant="outlined"
         block
         color="brown1"
-        @click="onClickAddMenu"
+        @click="onClickAddMenuTable"
       >
-        <v-icon>mdi-plus</v-icon>メニュー
+        <v-icon>mdi-silverware</v-icon>献立
       </v-btn>
     </v-col>
 
-    <v-col cols="4" md="3" class="text-center">
+    <v-col cols="4">
       <v-btn
         variant="outlined"
         block
-        disabled
         color="brown1"
-        @click="onClickAddTag"
+        @click="onClickEditMenu"
       >
-      <v-icon>mdi-plus</v-icon>タグ
+        <v-icon>mdi-pencil</v-icon>編集
+      </v-btn>
+    </v-col>
+
+    <v-col cols="4">
+      <v-btn
+        variant="outlined"
+        block
+        color="brown1"
+        disabled
+      >
+        <v-icon>mdi-delete</v-icon>削除
       </v-btn>
     </v-col>
   </v-row>
 </template>
 
 <script setup lang="ts">
-import { MenuListStoreType } from "@/composables/menus/use-menu-list"
-import MenuListStoreKey from "@/composables/menus/use-menu-list-key"
+const emit = defineEmits()
 
-const { filteredMenus } = inject(MenuListStoreKey) as MenuListStoreType
-
-const menuCount = computed(() => {
-  return filteredMenus.value.length
-})
-
-const onClickAddMenu = () => {
-
+const onClickAddMenuTable = () => {
+  emit('click-add-menu-table')
 }
 
-const onClickAddTag = () => {
-
+const onClickEditMenu = () => {
+  emit('click-edit-menu')
 }
 </script>

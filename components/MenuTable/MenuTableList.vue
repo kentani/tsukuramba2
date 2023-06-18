@@ -88,7 +88,6 @@ const onClickMenuTable = async (menuTable: any) => {
     await createMenuTable({ yyyymmdd: menuTable.yyyymmdd })
   }
 
-
   router.push({
     path: '/menu-tables/d',
     query: { menuTableID: currentMenuTable.value.id }

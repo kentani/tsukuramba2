@@ -4,109 +4,46 @@
     rounded="0"
     color="brown2"
   >
+    <MenuBack class="my-1" />
+
     <v-img
       class="align-end text-white"
       position="center center"
-      height="240"
+      height="280"
       :src="currentMenu.url || currentMenu.ogp?.image || defaultImage"
       cover
     ></v-img>
 
-    <v-card-title class="px-0 text-h6 text-brown1 font-weight-bold">
+    <v-card-title class="text-h6 text-brown1 font-weight-bold">
       <div>{{ currentMenu.name }}</div>
     </v-card-title>
 
-    <v-card-text class="px-0">
+    <v-card-text>
       <div
         v-for="tag in tags"
         :key="tag.id"
-        class="py-0 px-1 text-center text-body-2 d-inline-block"
-        style="color: rgb(var(--v-theme-brown1));"
+        class="py-0 px-1 text-center text-brown1 text-body-2 d-inline-block"
       >
         #{{ tag.name }}
       </div>
 
-      <v-row dense class="my-3">
-        <v-col cols="6">
-          <v-btn
-            variant="outlined"
-            block
-            color="brown1"
-          >
-            <v-icon>mdi-pencil</v-icon>編集
-          </v-btn>
-        </v-col>
+      <MenuAction
+        class="my-3"
+        @click-add-menu-table="onClickAddMenuTable"
+        @click-edit-menu="onClickEditMenu"
+      />
 
-        <v-col cols="6">
-          <v-btn
-            variant="outlined"
-            block
-            color="grey"
-            disabled
-          >
-            <v-icon>mdi-delete</v-icon>削除
-          </v-btn>
-        </v-col>
-      </v-row>
-
-      <v-row dense no-gutters align="center" class="mb-2">
-        <v-col cols="12" class="d-flex align-center text-brown1">
-          <div class="text-body-2">参考サイト</div>
-        </v-col>
-      </v-row>
-
-      <v-card
-        :loading="false"
-        flat
-        max-height="140"
-        class="mb-2"
-      >
-        <v-row
-          dense
-          no-gutters
-          align="center"
-        >
-          <v-col cols="8">
-            <div class="pa-2 text-body-2 text-brown1 font-weight-bold">
-              {{ currentMenu.ogp?.title }}
-            </div>
-
-            <v-btn
-              v-show="currentMenu.ogp?.url?.length > 0"
-              variant="text"
-              color="brown1"
-              class="px-2 py-0"
-              @click=""
-            >
-              参考サイトを開く
-            </v-btn>
-          </v-col>
-
-          <v-col cols="4">
-            <div class="pa-2">
-              <v-img
-                max-height="120"
-                position="center center"
-                :src="currentMenu.ogp?.image"
-                alt="OGP画像"
-              ></v-img>
-            </div>
-          </v-col>
-        </v-row>
-      </v-card>
-
-      <!-- <v-row dense no-gutters align="center" class="mb-2">
-        <v-col cols="12" class="d-flex align-center text-brown1">
-          <div class="text-body-2">材料</div>
-        </v-col>
-      </v-row>
-
-      <v-row dense no-gutters align="center" class="mb-2">
-        <v-col cols="12" class="d-flex align-center text-brown1">
-          <div class="text-body-2">作り方</div>
-        </v-col>
-      </v-row> -->
+      <MenuLinkCard label="参考サイト" />
     </v-card-text>
+
+    <MenuAddMenuTableDialog
+      ref="menuAddMenuTableDialog"
+    />
+
+    <MenuEditMenuDialog
+      ref="menuEditMenuDialog"
+      @close="onClose"
+    />
   </v-card>
 </template>
 
@@ -120,6 +57,8 @@ const { tagsHash } = inject(MenuTableListStoreKey) as MenuTableListStoreType
 const { currentMenu } = inject(MenuStoreKey) as MenuStoreType
 
 const defaultImage = ref('/assets/images/pasta.png')
+const menuAddMenuTableDialog = ref()
+const menuEditMenuDialog = ref()
 
 const tags = computed(() => {
   return currentMenu.value.tags?.map((tagID: any) => tagsHash.value[tagID]).sort((a: any, b: any) => {
@@ -128,4 +67,30 @@ const tags = computed(() => {
     }
   })
 })
+
+const onClose = (updated: boolean) => {
+  if(updated) {
+    console.log('aaaa')
+  }
+}
+
+const onClickAddMenuTable = () => {
+  openDialog('add-menu-table')
+}
+
+const onClickEditMenu = () => {
+  openDialog('edit-menu')
+}
+
+const openDialog = (dialogType: any) => {
+  switch(dialogType) {
+    case 'add-menu-table':
+      menuAddMenuTableDialog.value.open()
+      break
+    case 'edit-menu':
+      menuEditMenuDialog.value.setRollBackData()
+      menuEditMenuDialog.value.open({ isEdit: true })
+      break
+  }
+}
 </script>

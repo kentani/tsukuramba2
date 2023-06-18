@@ -1,4 +1,4 @@
-import { getFirestore, collection, query, where, getDocs, orderBy, limit, doc, setDoc, serverTimestamp } from "firebase/firestore"
+import { getFirestore, collection, query, where, getDocs, orderBy, limit, doc, setDoc, serverTimestamp, updateDoc } from "firebase/firestore"
 
 export default function MenuStore(ctx: any) {
   // 状態
@@ -36,14 +36,59 @@ export default function MenuStore(ctx: any) {
     return currentMenu.value
   }
 
+  const createMenu = async (params: { menu: any }) => {
+    if (ctx) {
+      const db = getFirestore(ctx.$firebase)
+      const docRef = doc(collection(db, "menus"))
+      const menu = {
+        ...params.menu,
+        id: docRef.id,
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
+      }
+
+      await setDoc(docRef, menu)
+      setCurrentMenu({ menu: menu })
+    }
+
+    return currentMenu.value
+  }
+
+  const updateMenu = async (params: { menu: any }) => {
+    if (ctx) {
+      const db = getFirestore(ctx.$firebase)
+      const docRef = doc(db, "menus", params.menu.id)
+      const menu = {
+        ...params.menu,
+        updatedAt: serverTimestamp(),
+      }
+
+      await updateDoc(docRef, menu)
+      setCurrentMenu({ menu: menu })
+    }
+
+    return currentMenu.value
+  }
+
+  //////////////////////////
+  // DB以外
+  //////////////////////////
+
   const setCurrentMenu = (params: { menu: any }) => {
-    state.currentMenu = params.menu
+    state.currentMenu = Object.assign({}, state.currentMenu, params.menu)
+  }
+
+  const resetCurrentMenu = () => {
+    state.currentMenu = {}
   }
 
   return {
     currentMenu,
     fetchMenu,
+    createMenu,
+    updateMenu,
     setCurrentMenu,
+    resetCurrentMenu,
   }
 
   //////////////////////////

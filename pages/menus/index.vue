@@ -1,10 +1,10 @@
 <template>
   <v-container>
-    <MenuAction />
+    <MenuListAction />
 
     <v-divider class="my-1"></v-divider>
 
-    <MenuSearch />
+    <MenuListSearch />
 
     <v-divider class="my-1"></v-divider>
 

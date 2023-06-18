@@ -1,4 +1,4 @@
-import { getFirestore, collection, query, where, getDocs, orderBy, limit, doc, setDoc, serverTimestamp } from "firebase/firestore"
+import { getFirestore, collection, query, where, getDocs, orderBy, limit, doc, setDoc, serverTimestamp, DocumentData, updateDoc } from "firebase/firestore"
 import moment from 'moment'
 // import 'moment/dist/locale/ja'
 
@@ -20,17 +20,32 @@ export default function MenuTableStore(ctx: any) {
   //////////////////////////
   // DB系
   //////////////////////////
-  const fetchMenuTable = async (params: { menuTableID: any }) => {
-    if (ctx && !currentMenuTable.value.id) {
+  const fetchMenuTable = async (params: { menuTableID?: any, yyyymmdd?: any, force?: boolean }) => {
+    const { menuTableID, yyyymmdd, force } = params
+
+    if(force) {
+      resetCurrentMenuTable()
+    }
+
+    if (ctx && !currentMenuTable.value?.id) {
       const db = getFirestore(ctx.$firebase)
+      let querySnapshot = <DocumentData>[]
 
-      const querySnapshot = await getDocs(query(
-        collection(db, 'menu-tables'),
-        where('id', '==', params.menuTableID),
-        limit(1)
-      ))
+      if(menuTableID) {
+        querySnapshot = await getDocs(query(
+          collection(db, 'menu-tables'),
+          where('id', '==', menuTableID),
+          limit(1)
+        ))
+      } else if(yyyymmdd) {
+        querySnapshot = await getDocs(query(
+          collection(db, 'menu-tables'),
+          where('yyyymmdd', '==', yyyymmdd),
+          limit(1)
+        ))
+      }
 
-      querySnapshot.forEach((doc) => {
+      await querySnapshot.forEach((doc: any) => {
         setCurrentMenuTable({ menuTable: doc.data() })
       })
     }
@@ -38,17 +53,39 @@ export default function MenuTableStore(ctx: any) {
     return currentMenuTable.value
   }
 
-  const createMenuTable = async (params: { yyyymmdd: any }) => {
+  const createMenuTable = async (params: { yyyymmdd: any, menus?: any }) => {
+    const { yyyymmdd, menus } = params
+
     if (ctx) {
       const db = getFirestore(ctx.$firebase)
       const docRef = doc(collection(db, "menu-tables"))
       const menuTable = {
         id: docRef.id,
-        yyyymmdd: params.yyyymmdd,
-        menus: [],
+        yyyymmdd: yyyymmdd,
+        menus: menus || [],
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
       }
 
       await setDoc(docRef, menuTable)
+      setCurrentMenuTable({ menuTable: menuTable })
+    }
+
+    return currentMenuTable.value
+  }
+
+  const updateMenuTable = async (params: { id: any, menus?: any }) => {
+    const { id, menus } = params
+
+    if (ctx) {
+      const db = getFirestore(ctx.$firebase)
+      const docRef = doc(db, "menu-tables", id)
+      const menuTable = {
+        menus: menus || [],
+        updatedAt: serverTimestamp(),
+      }
+
+      await updateDoc(docRef, menuTable)
       setCurrentMenuTable({ menuTable: menuTable })
     }
 
@@ -93,6 +130,7 @@ export default function MenuTableStore(ctx: any) {
     setCurrentMenuTable,
     resetCurrentMenuTable,
     createMenuTable,
+    updateMenuTable,
     buildMenus,
   }
 }

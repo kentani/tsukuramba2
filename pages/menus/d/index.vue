@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container v-show="state.loaded" class="pa-0">
     <Menu />
   </v-container>
 </template>
@@ -10,13 +10,22 @@ import MenuTableListStoreKey from "@/composables/menu-tables/use-menu-table-list
 import { MenuStoreType } from "@/composables/menus/use-menu"
 import MenuStoreKey from "@/composables/menus/use-menu-key"
 
-const { fetchAllTags, tagsHash } = inject(MenuTableListStoreKey) as MenuTableListStoreType
-const { fetchMenu } = inject(MenuStoreKey) as MenuStoreType
+const { fetchAllTags } = inject(MenuTableListStoreKey) as MenuTableListStoreType
+const { fetchMenu, resetCurrentMenu } = inject(MenuStoreKey) as MenuStoreType
 
 const route = useRoute()
 
+const state = reactive({
+  loaded: false,
+})
+
 onMounted(async () => {
-  await fetchAllTags()
+  fetchAllTags()
   await fetchMenu({ menuID: route.query.menuID })
+  state.loaded = true
+})
+
+onUnmounted(() => {
+  resetCurrentMenu()
 })
 </script>
