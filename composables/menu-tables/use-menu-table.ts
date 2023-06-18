@@ -6,13 +6,19 @@ export default function MenuTableStore(ctx: any) {
   // 状態
   const state = reactive<{
     currentMenuTable: any,
+    selectedMenus: any,
   }>({
     currentMenuTable: {},
+    selectedMenus: [],
   })
 
   // computed
   const currentMenuTable = computed(() => {
     return state.currentMenuTable
+  })
+
+  const selectedMenus = computed(() => {
+    return state.selectedMenus
   })
 
   //////////////////////////
@@ -86,7 +92,12 @@ export default function MenuTableStore(ctx: any) {
       }
 
       await updateDoc(docRef, menuTable)
-      setCurrentMenuTable({ menuTable: menuTable })
+      setCurrentMenuTable({
+        menuTable: {
+          ...currentMenuTable.value,
+          ...menuTable,
+        }
+      })
     }
 
     return currentMenuTable.value
@@ -124,14 +135,20 @@ export default function MenuTableStore(ctx: any) {
     })
   }
 
+  const setSelectedMenus = (params: { menus: any }) => {
+    state.selectedMenus = params.menus.map((m: any) => ({...m}))
+  }
+
   return {
     currentMenuTable,
+    selectedMenus,
     fetchMenuTable,
     setCurrentMenuTable,
     resetCurrentMenuTable,
     createMenuTable,
     updateMenuTable,
     buildMenus,
+    setSelectedMenus,
   }
 }
 

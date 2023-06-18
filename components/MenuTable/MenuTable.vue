@@ -1,22 +1,19 @@
 <template>
   <v-card flat color="brown2">
-    <v-card-title
-      class="justify-center text-h5 d-flex"
-      style="color: rgb(var(--v-theme-brown1))"
-    >
+
+    <MenuBack class="mt-1"/>
+
+    <v-card-title class="justify-center text-h5 d-flex text-brown1 pt-0 pb-3">
       <div class="px-1">{{ currentMenuTable.month }}</div>
       <div class="">/</div>
       <div class="px-1">{{ currentMenuTable.date }}</div>
       <div class="px-1">{{ currentMenuTable.day }}</div>
     </v-card-title>
 
-    <v-card-text class="px-0">
-      <v-row dense no-gutters align="center">
-        <v-col cols="12" class="d-flex align-center" style="color: rgb(var(--v-theme-brown1))">
-          <div class="text-body-1">献立</div>
-          <div class="px-2 text-h5">{{ menusCount }}</div>
-        </v-col>
-      </v-row>
+    <v-card-text>
+      <MenuTableAction
+        @click-edit-menu-table="onClickEditMenuTable"
+      />
 
       <v-row dense>
         <v-col
@@ -30,12 +27,13 @@
             flat
             rounded="0"
             color="brown2"
+            @click="onClickMenu(menu)"
           >
             <v-img
               class="align-end text-white"
               position="center center"
               height="240"
-              :src="menu.url || menu.ogp?.image || ''"
+              :src="menu.url || menu.ogp?.image || defaultImage"
               cover
             >
               <v-card-title
@@ -60,6 +58,10 @@
         </v-col>
       </v-row>
     </v-card-text>
+
+    <MenuTableEditMenuTableDialog
+      ref="menuTableEditMenuTableDialog"
+    />
   </v-card>
 </template>
 
@@ -70,11 +72,12 @@ import { MenuTableStoreType } from "@/composables/menu-tables/use-menu-table"
 import MenuTableStoreKey from "@/composables/menu-tables/use-menu-table-key"
 
 const { tagsHash, menusHash } = inject(MenuTableListStoreKey) as MenuTableListStoreType
-const { currentMenuTable, buildMenus } = inject(MenuTableStoreKey) as MenuTableStoreType
+const { currentMenuTable, setCurrentMenuTable, buildMenus } = inject(MenuTableStoreKey) as MenuTableStoreType
 
-const menusCount = computed(() => {
-  return currentMenuTable.value.menus?.length || 0
-})
+const menuTableEditMenuTableDialog = ref()
+const defaultImage = ref('/assets/images/pasta.png')
+
+const router = useRouter()
 
 const menus = computed(() => {
   return buildMenus({
@@ -83,24 +86,27 @@ const menus = computed(() => {
     menusHash: menusHash.value
   })
 })
+
+const onClickMenu = (menu: any) => {
+  router.push({
+    path: '/menus/d',
+    query: { menuID: menu.id }
+  })
+}
+
+const onClickEditMenuTable = () => {
+  openDialog('edit-menu-table')
+}
+
+const openDialog = (dialogType: any) => {
+  switch(dialogType) {
+    case 'edit-menu-table':
+      menuTableEditMenuTableDialog.value.setRollBackData()
+      menuTableEditMenuTableDialog.value.open()
+      break
+  }
+}
 </script>
 
 <style scoped>
-.test {
-  position: relative;
-  display: inline-block;
-}
-.test:before {
-  content: '';
-  position: absolute;
-  bottom: -5px;
-  display: inline-block;
-  width: 100%;
-  height: 2px;
-  left: 50%;
-  -webkit-transform: translateX(-50%);
-  transform: translateX(-50%);
-  background-color: #006666;
-  border-radius: 2px;
-}
 </style>

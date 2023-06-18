@@ -42,7 +42,6 @@
 
     <MenuEditMenuDialog
       ref="menuEditMenuDialog"
-      @close="onClose"
     />
   </v-card>
 </template>
@@ -67,12 +66,6 @@ const tags = computed(() => {
     }
   })
 })
-
-const onClose = (menu?: any) => {
-  if(menu) {
-    setCurrentMenu({ menu: menu })
-  }
-}
 
 const onClickAddMenuTable = () => {
   openDialog('add-menu-table')

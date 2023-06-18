@@ -133,8 +133,6 @@ import MenuStoreKey from "@/composables/menus/use-menu-key"
 const { allTags } = inject(MenuTableListStoreKey) as MenuTableListStoreType
 const { currentMenu, createMenu, updateMenu, setCurrentMenu } = inject(MenuStoreKey) as MenuStoreType
 
-const emit = defineEmits()
-
 const state = reactive({
   dialog: false,
   isEdit: false,
@@ -143,17 +141,16 @@ const state = reactive({
 })
 
 const onClickCloseDialog = () => {
-  close()
+  close({ reset: true })
 }
 
 const onClickComplete = async () => {
-  let menu;
   if(state.isEdit) {
-    menu = await updateMenu({ menu: currentMenu.value })
+    await updateMenu({ menu: currentMenu.value })
   } else {
-    menu = await createMenu({ menu: currentMenu.value })
+    await createMenu({ menu: currentMenu.value })
   }
-  close(menu)
+  close({ reset: false })
 }
 
 const onChangeName = () => {
@@ -214,13 +211,16 @@ const open = (params: { isEdit: boolean }) => {
   state.dialog = true
 }
 
-const close = async (menu?: any) => {
+const close = async (params: { reset: boolean }) => {
   if (!state.isEdit && currentMenu.value.url?.length) {
     await deleteImage()
   }
-  setCurrentMenu({ menu: state.currentMenuToRollBack })
+
+  if(params.reset) {
+    setCurrentMenu({ menu: state.currentMenuToRollBack })
+  }
+
   state.dialog = false
-  emit('close', menu)
 }
 
 const deleteImage = async () => {

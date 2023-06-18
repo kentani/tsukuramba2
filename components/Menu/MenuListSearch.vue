@@ -1,6 +1,7 @@
 <template>
   <v-row
     dense
+    no-gutters
     align="center"
   >
     <v-col
@@ -43,6 +44,7 @@
     >
       <v-text-field
         v-model="state.name"
+        class="px-2"
         variant="outlined"
         density="compact"
         hide-details
@@ -55,7 +57,6 @@
     <v-col
       cols="2"
       sm="1"
-      class="text-center"
     >
       <v-btn
         variant="text"
@@ -132,4 +133,8 @@ const onClickClose = () => {
   state.chips = []
   filter()
 }
+
+onMounted(() => {
+  filter()
+})
 </script>
