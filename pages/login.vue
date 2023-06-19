@@ -44,7 +44,7 @@ const router = useRouter()
 
 const onClickGoogleLogin = () => {
   login().then(() => {
-    router.push('/menu-tables')
+    router.push('/menus')
   })
 };
 </script>
