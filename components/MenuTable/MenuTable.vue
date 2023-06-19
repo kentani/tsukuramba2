@@ -75,7 +75,7 @@ const { tagsHash, menusHash } = inject(MenuTableListStoreKey) as MenuTableListSt
 const { currentMenuTable, setCurrentMenuTable, buildMenus } = inject(MenuTableStoreKey) as MenuTableStoreType
 
 const menuTableEditMenuTableDialog = ref()
-const defaultImage = ref('/assets/images/pasta.png')
+const defaultImage = ref('/images/pasta.png')
 
 const router = useRouter()
 

@@ -41,7 +41,7 @@ import MenuTableStoreKey from "@/composables/menu-tables/use-menu-table-key"
 const { menusHash } = inject(MenuTableListStoreKey) as MenuTableListStoreType
 const { currentMenuTable, selectedMenus, setCurrentMenuTable, setSelectedMenus } = inject(MenuTableStoreKey) as MenuTableStoreType
 
-const defaultImage = ref('/assets/images/pasta.png')
+const defaultImage = ref('/images/pasta.png')
 
 const menus = computed(() => {
   return selectedMenus.value

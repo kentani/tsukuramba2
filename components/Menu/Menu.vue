@@ -55,7 +55,7 @@ import MenuStoreKey from "@/composables/menus/use-menu-key"
 const { tagsHash } = inject(MenuTableListStoreKey) as MenuTableListStoreType
 const { currentMenu, setCurrentMenu } = inject(MenuStoreKey) as MenuStoreType
 
-const defaultImage = ref('/assets/images/pasta.png')
+const defaultImage = ref('/images/pasta.png')
 const menuAddMenuTableDialog = ref()
 const menuEditMenuDialog = ref()
 

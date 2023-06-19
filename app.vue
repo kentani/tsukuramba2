@@ -1,6 +1,8 @@
 <template>
   <NuxtLayout>
-    <NuxtPage />
+    <ClientOnly fallback-tag="span" fallback="Loading...">
+      <NuxtPage />
+    </ClientOnly>
   </NuxtLayout>
 </template>
 

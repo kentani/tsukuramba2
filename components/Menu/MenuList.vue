@@ -49,7 +49,7 @@ const { setCurrentMenu } = inject(MenuStoreKey) as MenuStoreType
 
 const router = useRouter()
 
-const defaultImage = ref('/assets/images/pasta.png')
+const defaultImage = ref('/images/pasta.png')
 
 const menus = computed(() => {
   // return buildMenus({

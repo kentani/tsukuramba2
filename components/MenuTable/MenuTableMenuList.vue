@@ -44,7 +44,7 @@ const { menusHash } = inject(MenuTableListStoreKey) as MenuTableListStoreType
 const { currentMenuTable, setCurrentMenuTable, setSelectedMenus } = inject(MenuTableStoreKey) as MenuTableStoreType
 const { filteredMenus } = inject(MenuListStoreKey) as MenuListStoreType
 
-const defaultImage = ref('/assets/images/pasta.png')
+const defaultImage = ref('/images/pasta.png')
 
 const menus = computed(() => {
   return filteredMenus.value
