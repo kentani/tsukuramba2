@@ -129,10 +129,13 @@ import axios from 'axios'
 
 import { MenuTableListStoreType } from "@/composables/menu-tables/use-menu-table-list"
 import MenuTableListStoreKey from "@/composables/menu-tables/use-menu-table-list-key"
+import { MenuListStoreType } from "@/composables/menus/use-menu-list"
+import MenuListStoreKey from "@/composables/menus/use-menu-list-key"
 import { MenuStoreType } from "@/composables/menus/use-menu"
 import MenuStoreKey from "@/composables/menus/use-menu-key"
 
 const { allTags } = inject(MenuTableListStoreKey) as MenuTableListStoreType
+const { updateFilteredMenus } = inject(MenuListStoreKey) as MenuListStoreType
 const { currentMenu, createMenu, updateMenu, setCurrentMenu } = inject(MenuStoreKey) as MenuStoreType
 
 const config = useRuntimeConfig()
@@ -154,6 +157,8 @@ const onClickComplete = async () => {
   } else {
     await createMenu({ menu: currentMenu.value })
   }
+
+  updateFilteredMenus({ menu: currentMenu.value })
   close({ reset: false })
 }
 

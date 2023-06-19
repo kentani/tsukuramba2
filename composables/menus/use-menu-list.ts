@@ -48,11 +48,19 @@ export default function MenuListStore(ctx: any) {
     state.filteredMenus.unshift(params.menu)
   }
 
+  const updateFilteredMenus = (params: { menu: any }) => {
+    const { menu } = params
+    const index = state.filteredMenus.findIndex((m: any) => m.id === menu.id)
+    state.filteredMenus.splice(index, 1)
+    state.filteredMenus.unshift(menu)
+  }
+
   return {
     filteredMenus,
     filterMenus,
     setFilteredMenus,
     addMenu,
+    updateFilteredMenus,
   }
 }
 

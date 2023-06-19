@@ -1,6 +1,25 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   ssr: false,
+  app: {
+    head: {
+      title: 'つくらんば',
+      titleTemplate: 'つくらんば',
+      meta: [
+        { charset: 'utf-8' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { hid: 'description', name: 'description', content: '' },
+        { name: 'format-detection', content: 'telephone=no' }
+      ],
+      link: [
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+        { rel: "manifest", href: "/manifest.webmanifest" },
+      ],
+      htmlAttrs: {
+        lang: 'ja'
+      },
+    }
+  },
   devtools: { enabled: true },
   css: ['vuetify/lib/styles/main.sass'],
   build: {
@@ -85,7 +104,7 @@ export default defineNuxtConfig({
         //   type: "image/png"
         // },
         {
-          src: "icons/256x256.png",
+          src: "icons/256.png",
           sizes: "256x256",
           type: "image/png"
         },
