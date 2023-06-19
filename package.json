@@ -17,6 +17,7 @@
     "@mdi/font": "^7.2.96",
     "@mdi/js": "^7.2.96",
     "@nuxtjs/moment": "^1.6.1",
+    "@vite-pwa/nuxt": "^0.1.0",
     "firebase": "^9.22.2",
     "moment": "^2.29.4",
     "sass": "^1.63.3",

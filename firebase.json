@@ -1,6 +1,7 @@
 {
   "hosting": {
-    "public": "dist",
+    "site": "tsukuramba2",
+    "public": ".output/public",
     "ignore": [
       "firebase.json",
       "**/.*",
@@ -8,8 +9,8 @@
     ],
     "rewrites": [
       {
-        "source": "**",
-        "destination": "/index.html"
+        "source": "/",
+        "destination": "/menus.html"
       }
     ]
   },
