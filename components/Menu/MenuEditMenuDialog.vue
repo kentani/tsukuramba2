@@ -97,7 +97,9 @@
             </v-col>
 
             <v-col cols="12">
-              <MenuLinkCard />
+              <MenuLinkCard
+                :loading="state.ogpLoading"
+              />
             </v-col>
           </v-row>
         </v-card-text>
@@ -133,11 +135,13 @@ import MenuStoreKey from "@/composables/menus/use-menu-key"
 const { allTags } = inject(MenuTableListStoreKey) as MenuTableListStoreType
 const { currentMenu, createMenu, updateMenu, setCurrentMenu } = inject(MenuStoreKey) as MenuStoreType
 
+const config = useRuntimeConfig()
+
 const state = reactive({
   dialog: false,
   isEdit: false,
   currentMenuToRollBack: null,
-  ogpLoaded: <string|null>null,
+  ogpLoading: <string|boolean>false,
 })
 
 const onClickCloseDialog = () => {
@@ -179,23 +183,21 @@ const onChangeImage = (file: any) => {
 
 const onChangeReference = async () => {
   if(currentMenu.value.reference.length) {
-    state.ogpLoaded = 'brown'
+    state.ogpLoading = 'brown'
 
-    const fetchOgpDataAPI = `${process.env.FETCH_OGP_API}?url=${currentMenu.value.reference}`
     const invalidData = ['#N/A', '#VALUE!']
     await axios
-      .get(fetchOgpDataAPI)
+      .get(`${config.public.fetchOgpApi}?url=${currentMenu.value.reference}`)
       .then((res) => {
         if (!invalidData.includes(res.data.title)) {
-          const ogp = {...res.data}
           const menu = {
             ...currentMenu.value,
-            ...ogp,
+            ogp: {...res.data},
           }
           setCurrentMenu({ menu: menu })
         }
       })
-    state.ogpLoaded = null
+    state.ogpLoading = false
   } else {
     const ogp = { title: '', description: '', image: '', url: '' }
     const menu = {

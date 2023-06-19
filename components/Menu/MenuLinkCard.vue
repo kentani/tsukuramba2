@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="currentMenu.ogp?.url"
+    v-if="currentMenu.reference"
   >
     <div
       v-if="label.length"
@@ -10,7 +10,7 @@
     </div>
 
     <v-card
-      :loading="false"
+      :loading="loading"
       flat
       max-height="140"
       class="mb-2"
@@ -60,8 +60,10 @@ const { currentMenu } = inject(MenuStoreKey) as MenuStoreType
 
 const props = withDefaults(defineProps<{
   label?: string;
+  loading?: string|boolean;
 }>(), {
   label: "",
+  loading: false,
 });
 
 const onClickOpenReference = () => {
