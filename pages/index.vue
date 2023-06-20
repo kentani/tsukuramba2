@@ -1,12 +1,12 @@
 <template>
   <v-container style="height: 100%;">
-    <div>TOP</div>
+    <!-- <div>TOP</div>
     <div>isLogined: {{ isLogined }}</div>
     <div>uid: {{ currentUser?.uid }}</div>
     <div>displayName: {{ currentUser?.displayName }}</div>
     <div>userID: {{ user?.id }}</div>
     <div>admin: {{ user?.admin }}</div>
-    <div>approved: {{ user?.approved }}</div>
+    <div>approved: {{ user?.approved }}</div> -->
 
     <v-row
       dense
@@ -29,7 +29,7 @@
           <v-icon left>
             mdi-google
           </v-icon>
-          Sign out with Google
+          <span class="ml-2">Sign out with Google</span>
         </v-btn>
       </v-col>
     </v-row>
@@ -37,6 +37,10 @@
 </template>
 
 <script setup lang="ts">
+definePageMeta({
+  layout: 'root'
+})
+
 import { AuthStoreType } from "@/composables/use-auth";
 import AuthStoreKey from "@/composables/use-auth-key";
 

@@ -1,7 +1,5 @@
 <template>
   <v-container style="height: 100%;">
-    <div>Login</div>
-
     <v-row
       dense
       justify="center"

@@ -49,9 +49,10 @@ onMounted(async () => {
     if (user.value) {
       // ログイン済み
       return router.push('/menus')
+      // state.showable = true
     } else {
       // 未ログイン
-      state.showable = true;
+      return router.push('/login')
     }
   })
 })

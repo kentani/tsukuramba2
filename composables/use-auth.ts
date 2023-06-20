@@ -70,14 +70,15 @@ export default function AuthStore(ctx: any) {
       await signInWithPopup(auth, new GoogleAuthProvider)
         .then(async (result) => {
           state.currentUser = result.user
-          fetchUser({ uid: result.user.uid })
+          await fetchUser({ uid: result.user.uid })
+
           if(!user.value) {
             await createUser({
               uid: result.user.uid,
               name: result.user.displayName,
             })
 
-            fetchUser({ uid: result.user.uid })
+            await fetchUser({ uid: result.user.uid })
           }
         }).catch((error) => {
           console.log(error)
