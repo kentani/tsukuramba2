@@ -44,6 +44,8 @@ export default defineNuxtConfig({
       firebaseMessagingSenderID: process.env.FIREBASE_MESSAGING_SENDER_ID,
       firebaseAppID: process.env.FIREBASE_APP_ID,
       fetchOgpApi: process.env.FETCH_OGP_API,
+      ga4id: process.env.GA4_ID,
+      gtmId: process.env.GTM_ID,
     }
   },
   modules: ['@vite-pwa/nuxt'],

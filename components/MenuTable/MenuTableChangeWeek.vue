@@ -24,7 +24,14 @@
                   class="d-flex justify-center"
                   align-self="center"
                 >
-                  <v-btn elevation="0" size="x-large" color="brown2" :ripple="false" @click="onClickPrevWeek">
+                  <v-btn
+                    id="prev-week-btn"
+                    elevation="0"
+                    size="x-large"
+                    color="brown2"
+                    :ripple="false"
+                    @click="onClickPrevWeek"
+                  >
                     <v-icon color="brown1" size="x-large">
                       mdi-chevron-left
                     </v-icon>
@@ -45,7 +52,14 @@
                   class="d-flex justify-center"
                   align-self="center"
                 >
-                  <v-btn elevation="0" size="x-large" color="brown2" :ripple="false" @click="onClickNextWeek">
+                  <v-btn
+                    id="next-week-btn"
+                    elevation="0"
+                    size="x-large"
+                    color="brown2"
+                    :ripple="false"
+                    @click="onClickNextWeek"
+                  >
                     <v-icon color="brown1" size="x-large">
                       mdi-chevron-right
                     </v-icon>

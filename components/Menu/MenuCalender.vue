@@ -15,6 +15,7 @@
           align-self="center"
         >
           <v-btn
+            id="prev-month-btn"
             class="px-0"
             style="min-width: 0px;"
             variant="text"
@@ -41,6 +42,7 @@
           align-self="center"
         >
           <v-btn
+            id="next-month-btn"
             class="px-0"
             style="min-width: 0px;"
             variant="text"

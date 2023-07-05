@@ -2,6 +2,7 @@
   <v-row dense>
     <v-col cols="4">
       <v-btn
+        id="add-menu-table-btn"
         variant="outlined"
         block
         color="brown1"
@@ -13,6 +14,7 @@
 
     <v-col cols="4">
       <v-btn
+        id="edit-menu-btn"
         variant="outlined"
         block
         color="brown1"
@@ -24,6 +26,7 @@
 
     <v-col cols="4">
       <v-btn
+        id="delete-menu-btn"
         variant="outlined"
         block
         color="brown1"

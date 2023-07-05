@@ -27,6 +27,7 @@
 
             <v-col class="text-right">
               <v-btn
+                id="close-edit-menu-dialog-btn"
                 variant="text"
                 class="px-0"
                 style="min-width: 0px;"
@@ -108,6 +109,7 @@
           <v-spacer />
 
           <v-btn
+            id="complete-edit-menu-btn"
             class="text-brown1 font-weight-bold"
             style="min-width: 0px;"
             variant="text"
