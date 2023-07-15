@@ -12,8 +12,7 @@
     "@nuxt/devtools": "latest",
     "@nuxtjs/google-analytics": "^2.4.0",
     "@types/node": "^18",
-    "nuxt": "^3.5.2",
-    "vue-gtag-next": "^1.14.0"
+    "nuxt": "^3.5.2"
   },
   "dependencies": {
     "@mdi/font": "^7.2.96",
@@ -23,7 +22,6 @@
     "firebase": "^9.22.2",
     "moment": "^2.29.4",
     "sass": "^1.63.3",
-    "vue-gtag": "2.0.1",
     "vuetify": "^3.3.3"
   }
 }

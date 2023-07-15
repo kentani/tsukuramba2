@@ -160,7 +160,7 @@ const onClickComplete = async () => {
     await createMenu({ menu: currentMenu.value })
   }
 
-  updateFilteredMenus({ menu: currentMenu.value })
+  updateFilteredMenus({ menu: currentMenu.value });
   close({ reset: false })
 }
 

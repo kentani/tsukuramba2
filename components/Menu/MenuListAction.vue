@@ -12,7 +12,6 @@
     <v-col cols="4" md="3" class="text-center">
       <v-btn
         id="add-menu-btn"
-        :data-user-id="user.id || '0'"
         variant="outlined"
         block
         color="brown1"
@@ -43,12 +42,9 @@
 </template>
 
 <script setup lang="ts">
-import { AuthStoreType } from "@/composables/use-auth"
-import AuthStoreKey from "@/composables/use-auth-key"
 import { MenuListStoreType } from "@/composables/menus/use-menu-list"
 import MenuListStoreKey from "@/composables/menus/use-menu-list-key"
 
-const { user } = inject(AuthStoreKey) as AuthStoreType
 const { filteredMenus, addMenu } = inject(MenuListStoreKey) as MenuListStoreType
 const menuEditMenuDialog = ref()
 
