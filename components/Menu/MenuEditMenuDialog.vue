@@ -66,6 +66,11 @@
               ></v-file-input>
             </v-col>
 
+            <v-col cols="12" id="canvas-wrapper" class="justify-center">
+              <p class="text-overline">{{ state.fileName }}</p>
+              <canvas id="canvas" width="0" height="0"></canvas>
+            </v-col>
+
             <v-col cols="12">
               <v-autocomplete
                 v-model="currentMenu.tags"
@@ -126,7 +131,7 @@
 </template>
 
 <script setup lang="ts">
-import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
+import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject, uploadString } from "firebase/storage";
 import axios from 'axios'
 
 import { MenuTableListStoreType } from "@/composables/menu-tables/use-menu-table-list"
@@ -145,6 +150,8 @@ const config = useRuntimeConfig()
 const state = reactive({
   dialog: false,
   isEdit: false,
+  newImage: '',
+  fileName: '',
   currentMenuToRollBack: null,
   ogpLoading: <string|boolean>false,
 })
@@ -154,6 +161,10 @@ const onClickCloseDialog = () => {
 }
 
 const onClickComplete = async () => {
+  if (state.newImage.length) {
+    await uploadImage()
+  }
+
   if(state.isEdit) {
     await updateMenu({ menu: currentMenu.value })
   } else {
@@ -164,28 +175,24 @@ const onClickComplete = async () => {
   close({ reset: false })
 }
 
-const onChangeName = () => {
-  // 何もしない
-}
-
-const onChangeImage = (file: any) => {
-  if(!file) return
-  const firstFile = file.target.files[0]
-  if(!firstFile) return
-
+const uploadImage = async () => {
   const storage = getStorage()
-  const imageRef = ref(storage, firstFile.name)
+  const imageRef = ref(storage, state.fileName)
 
-  uploadBytes(imageRef, firstFile).then(() => {
-    getDownloadURL(imageRef).then(async (url) => {
+  await uploadString(imageRef, state.newImage, "data_url").then(async () => {
+    await getDownloadURL(imageRef).then(async (url) => {
       const menu ={
         ...currentMenu.value,
         url: url,
-        imageName: firstFile.name,
+        imageName: state.fileName,
       }
       setCurrentMenu({ menu: menu })
     });
   });
+}
+
+const onChangeName = () => {
+  // 何もしない
 }
 
 const onChangeReference = async () => {
@@ -215,8 +222,64 @@ const onChangeReference = async () => {
   }
 }
 
-const open = (params: { isEdit: boolean }) => {
+const onChangeImage = (f: any) => {
+  if(!f) return
+
+  const file = f.target.files[0]
+  if(!file) return
+
+  state.fileName = file.name
+
+  const image: any = new Image()
+  const reader = new FileReader()
+
+  reader.readAsDataURL(file)
+  reader.onload = (e: any) => {
+    image.src = e.target.result
+    image.onload = () => {
+      state.newImage = makeImage(image)
+      makeTumbnail(image)
+    }
+  }
+}
+
+const makeImage = (image: any) => {
+  const canvas: any = document.createElement('canvas')
+  const ctx = canvas.getContext('2d')
+  const ratio = image.height / image.width
+  const width = 1024
+  const height = width * ratio
+  canvas.height = height
+  canvas.width = width
+  ctx.drawImage(image, 0, 0, image.width, image.height, 0, 0, width, height)
+  return canvas.toDataURL('image/jpeg')
+}
+
+const makeTumbnail = (image: any) => {
+  const canvas: any = document.getElementById("canvas")
+  const ctx = canvas.getContext('2d')
+  const ratio = image.height / image.width
+  const width = 256
+  const height = width * ratio
+  canvas.height = height
+  canvas.width = width
+  ctx.drawImage(image, 0, 0, image.width, image.height, 0, 0, width, height)
+}
+
+const open = async (params: { isEdit: boolean }) => {
   state.isEdit = params.isEdit
+  state.fileName = currentMenu.value.imageName || currentMenu.value.name
+
+  console.log(currentMenu.value)
+
+  const image: any = new Image()
+  image.src = currentMenu.value.url
+  image.crossOrigin = "anonymous";
+  image.onload = () => {
+    // state.newImage = makeImage(image)
+    makeTumbnail(image)
+  }
+
   state.dialog = true
 }
 
@@ -229,14 +292,16 @@ const close = async (params: { reset: boolean }) => {
     setCurrentMenu({ menu: state.currentMenuToRollBack })
   }
 
+  state.newImage = ''
+  state.fileName = ''
   state.dialog = false
 }
 
 const deleteImage = async () => {
-  const storage = getStorage()
-  const imageRef = ref(storage, currentMenu.value.imageName)
+  // const storage = getStorage()
+  // const imageRef = ref(storage, currentMenu.value.imageName)
 
-  await deleteObject(imageRef)
+  // await deleteObject(imageRef)
 }
 
 const setRollBackData = () => {
